@@ -2,7 +2,7 @@ require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
 
 // ជំនួសដោយ token ពី @BotFather
-const token = process.env.BOT_TOKEN || 'YOUR_BOT_TOKEN_HERE';
+const token = process.env.BOT_TOKEN || '8314923099:AAFzoRSeX46YB8XI2GMQnCbnaFFbXHaAhcU';
 const ADMIN_ID = process.env.ADMIN_ID || 'YOUR_ADMIN_TELEGRAM_ID_HERE';
 const DEVELOPER = '@tephh';
 const SCHOOL = 'វិទ្យាស្ថានន័រតុន';
