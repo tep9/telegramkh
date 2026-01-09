@@ -354,14 +354,3 @@ console.log('សូមទាក់ទង @tephh ប្រសិនបើមា�
 const PORT = process.env.PORT || 3000;
 
 // បន្ថែមនៅចុងក្រោយនៃឯកសារ
-// Start web server for Render
-const express = require('express');
-const app = express();
-
-app.get('/', (req, res) => {
-    res.send(`✅ ${CLASS} Attendance Bot is running!`);
-});
-
-app.listen(PORT, () => {
-    console.log(`🌐 Web server running on port ${PORT}`);
-});
