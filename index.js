@@ -5,8 +5,8 @@ const TelegramBot = require('node-telegram-bot-api');
 const token = process.env.BOT_TOKEN || '8314923099:AAFzoRSeX46YB8XI2GMQnCbnaFFbXHaAhcU';
 const ADMIN_ID = process.env.ADMIN_ID || '1273972944';
 const DEVELOPER = '@tephh';
-const SCHOOL = 'វិទ្យាស្ថានន័រតុន';
-const CLASS = 'ថ្នាក់ M3 វិស្វកម្មស៊ីវិល';
+const SCHOOL = 'សាលាសកលវិទ្យាល័យ​ ន័រតុន';
+const CLASS = 'ថ្នាក់សំណង់ស៊ីវិល  M3';
 
 // បង្កើត Bot
 const bot = new TelegramBot(token, { polling: true });
@@ -27,7 +27,7 @@ const STATE = {
 const userData = {};
 
 console.log(`🤖 Bot ដំណើរការសម្រាប់ ${CLASS}, ${SCHOOL}`);
-console.log(`👨‍💻 អ្នកអភិវឌ្ឍន៍: ${DEVELOPER}`);
+console.log(`👨‍💻 Developer: ${DEVELOPER}`);
 
 // ពាក្យបញ្ជា /start
 bot.onText(/\/start/, (msg) => {
@@ -38,15 +38,15 @@ bot.onText(/\/start/, (msg) => {
     userData[chatId] = { step: 0, answers: {} };
     
     const welcomeMessage = `👋 ជំរាបសួរ ${userName}!\n\n` +
-                          `សូមស្វាគមន៍មកកាន់ Bot គ្រប់គ្រងវត្តមាន\n` +
+                          `សូមស្វាគមន៍មកកាន់ Bot វត្តមាន\n` +
                           `🏫 ${CLASS}\n` +
                           `📚 ${SCHOOL}\n\n` +
-                          `*តើអ្នករវល់/ឈឺថ្ងៃនេះឬទេ?*`;
+                          `*តើបងចង់ដាក់ច្បាប់ថ្ងៃនេះមែនទេ?*`;
     
     const options = {
         reply_markup: {
             keyboard: [
-                [{ text: '✅ បាទ/ចាស ខ្ញុំរវល់/ឈឺ' }, { text: '❌ ទេ ខ្ញុំទំនេរ' }]
+                [{ text: '✅ នឹងហើយ Brooo' }, { text: '❌ អត់ផង' }]
             ],
             resize_keyboard: true,
             one_time_keyboard: true
@@ -80,12 +80,11 @@ function handleBusyResponse(chatId, text, user) {
     if (text.includes('ទេ') || text.includes('❌') || text.includes('ទំនេរ')) {
         userStates.set(chatId, STATE.IDLE);
         
-        const response = `✅ ល្អណាស់! អ្នកទំនេរថ្ងៃនេះ។\n\n` +
-                        `*ប្រសិនបើអ្នករវល់ឬឈឺនៅពេលក្រោយ:*\n` +
-                        `គ្រាន់តែវាយ /start ម្តងទៀតដើម្បីរាយការណ៍។\n\n` +
-                        `🏫 ${CLASS}\n` +
+        const response = `✅ Okass! អត់អីទេចឹង។\n\n` +
+                        `*ប្រសិនបើបងរវល់ឬឈឺនៅពេលណាមួយ:*\n` +
+                        `គ្រាន់តែវាយ /start ម្តងទៀតដើម្បីរាយការណ៍មកMazer។\n\n` +
                         `📚 ${SCHOOL}\n` +
-                        `👨‍💻 អ្នកអភិវឌ្ឍន៍: ${DEVELOPER}`;
+                        `👨‍💻 Developer: ${DEVELOPER}`;
         
         bot.sendMessage(chatId, response, { parse_mode: 'Markdown' });
     } 
@@ -100,7 +99,7 @@ function handleBusyResponse(chatId, text, user) {
             }
         };
         
-        bot.sendMessage(chatId, "📝 សូមបញ្ចូល *ឈ្មោះពេញ* របស់អ្នក:", { 
+        bot.sendMessage(chatId, "📝 សូមបញ្ចូល *ឈ្មោះពេញ* របស់បង:", { 
             parse_mode: 'Markdown',
             reply_markup: { remove_keyboard: true }
         });
@@ -112,14 +111,14 @@ function handleInfoCollection(chatId, text, user) {
     
     if (!data) {
         userStates.set(chatId, STATE.IDLE);
-        return bot.sendMessage(chatId, "⚠️ សេស្ហិនបានផុតកំណត់។ សូមវាយ /start ម្តងទៀត។");
+        return bot.sendMessage(chatId, "⚠️ ការផ្ញើរបានផុតកំណត់។ សូមវាយ /start ម្តងទៀត។");
     }
     
     switch(data.step) {
         case 1: // ឈ្មោះពេញ
             data.answers.fullName = text;
             data.step = 2;
-            bot.sendMessage(chatId, "📝 សូមបញ្ចូល *លេខសិស្ស* (បើមាន):", { 
+            bot.sendMessage(chatId, "📝 សូមបញ្ចូល *លេខIDនិស្សិត* (បើមានហើយបើអត់ក៏អត់ទៅ):", { 
                 parse_mode: 'Markdown' 
             });
             break;
@@ -127,7 +126,7 @@ function handleInfoCollection(chatId, text, user) {
         case 2: // លេខសិស្ស (ស្រេចចិត្ត)
             data.answers.studentId = text;
             data.step = 3;
-            bot.sendMessage(chatId, "🤒 *មូលហេតុ* អវត្តមានរបស់អ្នក?\n(ឧទាហរណ៍៖ ឈឺ, បញ្ហាគ្រួសារ, កិច្ចការផ្ទាល់ខ្លួន):", { 
+            bot.sendMessage(chatId, "🤒 *Tell me your reason* មកហេតុអីបានឈប់?\n(ឈឺអី?, ខូចចិត្ត?, កិច្ចការផ្ទាល់ខ្លួន...):", { 
                 parse_mode: 'Markdown' 
             });
             break;
@@ -135,7 +134,7 @@ function handleInfoCollection(chatId, text, user) {
         case 3: // មូលហេតុ
             data.answers.reason = text;
             data.step = 4;
-            bot.sendMessage(chatId, "⏰ អ្នកនឹងអវត្តមានរយៈពេលប៉ុន្មាន?\n(ឧទាហរណ៍៖ ១ថ្ងៃ, ២ថ្ងៃ, សប្តាហ៍នេះ):", { 
+            bot.sendMessage(chatId, "⏰ ហើយអវត្តមានរយៈពេលប៉ុន្មានដែរ?ថ្ងៃណា​មកវិញ?\n(ឧទាហរណ៍៖ ១ថ្ងៃ, ២ថ្ងៃ, សប្តាហ៍នេះ):", { 
                 parse_mode: 'Markdown' 
             });
             break;
@@ -143,7 +142,7 @@ function handleInfoCollection(chatId, text, user) {
         case 4: // រយៈពេល
             data.answers.duration = text;
             data.step = 5;
-            bot.sendMessage(chatId, "📱 សូមបញ្ចូល *លេខទូរស័ព្ទ* របស់អ្នក:", { 
+            bot.sendMessage(chatId, "📱 សូមបញ្ចូល *លេខទូរស័ព្ទ* របស់បង:", { 
                 parse_mode: 'Markdown' 
             });
             break;
@@ -153,7 +152,7 @@ function handleInfoCollection(chatId, text, user) {
             data.step = 6;
             
             // សួរចំណាំបន្ថែម
-            bot.sendMessage(chatId, "💬 ចំណាំឬយោបល់បន្ថែម?\n(វាយ 'skip' ប្រសិនបើគ្មាន):", { 
+            bot.sendMessage(chatId, "💬 យោបល់បន្ថែម?\n(វាយ 'skip' ប្រសិនបើគ្មាន):", { 
                 parse_mode: 'Markdown' 
             });
             break;
@@ -197,11 +196,11 @@ function completeForm(chatId, data) {
     // ផ្ញើការបញ្ជាក់ទៅសិស្ស
     bot.sendMessage(chatId, 
         `✅ *សំណើត្រូវបានដាក់ស្នើ!*\n\n` +
-        `សំណើអវត្តមានរបស់អ្នកត្រូវបានផ្ញើទៅអ្នកគ្រប់គ្រង។\n` +
+        `សំណើអវត្តមានរបស់អ្នកត្រូវបានផ្ញើទៅMazer។\n` +
         `🆔 លេខសំណើ: *${requestId}*\n\n` +
         `អ្នកនឹងទទួលបានការជូនដំណឹងនៅពេលដែលត្រូវបានអនុម័តឬបដិសេធ។\n\n` +
-        `📞 *ព័ត៌មានទំនាក់ទំនងអ្នកគ្រប់គ្រង:*\n` +
-        `អ្នកអាចទាក់ទងអ្នកគ្រប់គ្រងដោយផ្ទាល់ប្រសិនបើជាការបន្ទាន់។\n\n` +
+        `📞 *ព័ត៌មានបន្ថែម:*\n` +
+        `អ្នកអាចទាក់ទងMazerដោយផ្ទាល់ប្រសិនបើជាការបន្ទាន់បានមួយសំនួរ៥០០៛ (យាយលេងទេ)\n\n` +
         `វាយ /start ដើម្បីធ្វើសំណើមួយទៀត។`,
         { parse_mode: 'Markdown' }
     );
@@ -226,7 +225,7 @@ function completeForm(chatId, data) {
     
     bot.sendMessage(ADMIN_ID, requestMessage, adminOptions)
         .catch(err => {
-            console.error('មិនអាចផ្ញើសារទៅអ្នកគ្រប់គ្រង:', err);
+            console.error('មិនអាចផ្ញើសារទៅMazer:', err);
         });
 }
 
@@ -251,10 +250,11 @@ bot.on('callback_query', (callbackQuery) => {
         
         // ផ្ញើការជូនដំណឹងទៅសិស្ស
         bot.sendMessage(request.chatId,
-            `🎉 *សំណើអវត្តមានរបស់អ្នកត្រូវបានអនុម័ត!*\n\n` +
-            `អ្នកគ្រប់គ្រងបានអនុម័តសំណើអវត្តមានរបស់អ្នក។\n` +
+            `🎉 *សំណើច្បាប់របស់បងត្រូវបានអនុម័ត!*\n\n` +
+            `Mazerបានអនុម័តសំណើច្បាប់របស់បង។\n` +
             `🆔 លេខសំណើ: ${requestId}\n\n` +
-            `សូមធ្វើការព្យាបាលឲ្យបានលឿន និងសូមអរគុណសម្រាប់ការជូនដំណឹង។`,
+            `លើកទឹកចិត្តMazer: https://pay.ababank.com/oRF8/7y7y1tha\n` +            
+            `អរគុណសម្រាប់ការជូនដំណឹង​។`,
             { parse_mode: 'Markdown' }
         );
         
@@ -278,10 +278,10 @@ bot.on('callback_query', (callbackQuery) => {
         
         // ផ្ញើការជូនដំណឹងទៅសិស្ស
         bot.sendMessage(request.chatId,
-            `⚠️ *សំណើអវត្តមានរបស់អ្នកត្រូវបានបដិសេធ!*\n\n` +
-            `អ្នកគ្រប់គ្រងបានបដិសេធសំណើអវត្តមានរបស់អ្នក។\n` +
+            `⚠️ *សំណើអវត្តមានរបស់បងត្រូវបានបដិសេធ!*\n\n` +
+            `Mazerបានបដិសេធសំណើអវត្តមានរបស់អ្នក។\n` +
             `🆔 លេខសំណើ: ${requestId}\n\n` +
-            `សូមទាក់ទងអ្នកគ្រប់គ្រងដោយផ្ទាល់សម្រាប់ព័ត៌មានបន្ថែម។`,
+            `សូមទាក់ទងMazerដោយផ្ទាល់សម្រាប់ព័ត៌មានបន្ថែម។`,
             { parse_mode: 'Markdown' }
         );
         
@@ -309,12 +309,12 @@ bot.onText(/\/help/, (msg) => {
                        `*ពាក្យបញ្ជា:*\n` +
                        `/start - ចាប់ផ្តើមធ្វើសំណើថ្មី\n` +
                        `/help - បង្ហាញសារជំនួយនេះ\n` +
-                       `/status - ពិនិត្យស្ថានភាពសំណើ\n\n` +
+                       `/status - ពិនិត្យស្ថានភាពសំណើច្បាប់\n\n` +
                        `*ព័ត៌មាន:*\n` +
                        `🏫 ថ្នាក់: ${CLASS}\n` +
                        `📚 សាលា: ${SCHOOL}\n` +
-                       `👨‍💻 អ្នកអភិវឌ្ឍន៍: ${DEVELOPER}\n\n` +
-                       `ប្រសិនបើមានបញ្ហា សូមទាក់ទងអ្នកគ្រប់គ្រងដោយផ្ទាល់។`;
+                       `👨‍💻 Developer: ${DEVELOPER}\n\n` +
+                       `ប្រសិនបើមានបញ្ហា សូមទាក់ទងMazerដោយផ្ទាល់។`;
     
     bot.sendMessage(chatId, helpMessage, { parse_mode: 'Markdown' });
 });
@@ -328,15 +328,15 @@ bot.onText(/\/status/, (msg) => {
     
     switch(state) {
         case STATE.WAITING_RESPONSE:
-            statusMessage += `⏳ សំណើរបស់អ្នកកំពុងរង់ចាំការអនុម័តពីអ្នកគ្រប់គ្រង។\n`;
+            statusMessage += `⏳ សំណើរបស់បងកំពុងរង់ចាំការអនុម័តពីMazer។\n`;
             statusMessage += `សូមរង់ចាំការជូនដំណឹង។`;
             break;
         case STATE.COLLECTING_INFO:
-            statusMessage += `📝 អ្នកកំពុងបំពេញទម្រង់សំណើ។\n`;
+            statusMessage += `📝 បងកំពុងបំពេញទម្រង់សំណើ។\n`;
             statusMessage += `សូមបំពេញព័ត៌មានឲ្យពេញលេញ។`;
             break;
         default:
-            statusMessage += `🆓 អ្នកមិនមានសំណើដែលកំពុងរង់ចាំទេ។\n`;
+            statusMessage += `🆓 បងមិនមានសំណើដែលកំពុងរង់ចាំទេ។\n`;
             statusMessage += `វាយ /start ដើម្បីចាប់ផ្តើមសំណើថ្មី។`;
     }
     
